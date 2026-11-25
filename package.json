@@ -9,6 +9,7 @@
     "studio:setup": "cd studio && npm install",
     "studio": "cd studio && npm run dev",
     "seed": "cd studio && npm run seed",
-    "import:redirects": "cd studio && node scripts/import-redirects.mjs"
+    "import:redirects": "cd studio && node scripts/import-redirects.mjs",
+    "studio:deploy": "cd studio && npm run deploy"
   }
 }

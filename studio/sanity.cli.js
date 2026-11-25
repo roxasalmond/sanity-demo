@@ -12,4 +12,8 @@ export default defineCliConfig({
     projectId: process.env.SANITY_STUDIO_PROJECT_ID,
     dataset: process.env.SANITY_STUDIO_DATASET || 'production',
   },
+  // The hosted editor at sanity-demo-almond.sanity.studio, so deploys don't ask again.
+  deployment: {
+    appId: 'rwdt2l62ltgt5h7mzp1vuc4d',
+  },
 });
