@@ -1,0 +1,10 @@
+---
+// The booking path every page shows near the top: one button and the phone number.
+import { getSettings } from '../lib/content.js';
+const settings = await getSettings();
+const tel = settings.phone.replace(/[^\d+]/g, '');
+---
+<div class="booking-bar">
+  <a class="button" href={settings.bookingUrl}>{settings.bookingLabel}</a>
+  <p>or call <a href={`tel:${tel}`}>{settings.phone}</a></p>
+</div>

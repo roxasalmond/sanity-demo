@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts, getSettings } from '../../lib/content.js';
+import { formatDate } from '../../lib/format.js';
+
+const posts = await getPosts();
+const settings = await getSettings();
+---
+<Base
+  title={`Blog | ${settings.title}`}
+  description="Short, practical notes for owners on pricing, marketing, hiring and growth."
+>
+  <section class="hero hero-small wrap">
+    <h1>Blog</h1>
+    <p class="lede">Short, practical notes for owners. One idea per post.</p>
+  </section>
+  <section class="wrap section">
+    <ul class="rows">
+      {posts.map((post) => (
+        <li>
+          <a class="row-link" href={`/blog/${post.slug}/`}>
+            <span class="row-title">{post.title}</span>
+            <span class="row-text">
+              <time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+              {' '}{post.excerpt}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>

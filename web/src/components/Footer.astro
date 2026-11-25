@@ -1,0 +1,25 @@
+---
+const { settings } = Astro.props;
+const tel = settings.phone.replace(/[^\d+]/g, '');
+---
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <p class="wordmark">{settings.title}</p>
+      <p>{settings.tagline}</p>
+      <p class="footer-contact"><a href={`tel:${tel}`}>{settings.phone}</a></p>
+      <p><a href={`mailto:${settings.email}`}>{settings.email}</a></p>
+    </div>
+    {(settings.footerColumns ?? []).map((column) => (
+      <nav aria-label={column.heading}>
+        <h2 class="footer-heading">{column.heading}</h2>
+        <ul>
+          {(column.links ?? []).map((link) => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    ))}
+  </div>
+  {settings.footerNote && <p class="wrap demo-note">{settings.footerNote}</p>}
+</footer>

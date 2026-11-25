@@ -1,0 +1,15 @@
+---
+import Button from '../Button.astro';
+import { getSettings } from '../../lib/content.js';
+const { section } = Astro.props;
+const settings = await getSettings();
+const tel = settings.phone.replace(/[^\d+]/g, '');
+---
+<section class="hero wrap">
+  <h1>{section.heading}</h1>
+  <p class="lede">{section.text}</p>
+  <div class="booking-bar">
+    {(section.ctas ?? []).map((cta) => <Button cta={cta} />)}
+    {section.showPhone && <p>or call <a href={`tel:${tel}`}>{settings.phone}</a></p>}
+  </div>
+</section>

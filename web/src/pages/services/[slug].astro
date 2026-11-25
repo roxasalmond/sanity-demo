@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import BookingBar from '../../components/BookingBar.astro';
+import { getServices, getPosts } from '../../lib/content.js';
+import { renderBody } from '../../lib/portable-text.js';
+
+export async function getStaticPaths() {
+  const services = await getServices();
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+const { service } = Astro.props;
+const related = (await getPosts()).filter((post) => post.relatedService?.slug === service.slug);
+---
+<Base
+  title={service.seo?.metaTitle ?? service.title}
+  description={service.seo?.metaDescription ?? service.summary}
+  noindex={service.seo?.noindex}
+>
+  <article>
+    <header class="hero hero-small wrap">
+      <p class="crumb"><a href="/services/">Services</a></p>
+      <h1>{service.title}</h1>
+      <p class="lede">{service.summary}</p>
+      <BookingBar />
+    </header>
+    {service.results?.length > 0 && (
+      <section class="wrap service-results" aria-label="Client results">
+        {service.results.map((r) => (
+          <figure>
+            <blockquote>{r.result}</blockquote>
+            <figcaption>{r.client}</figcaption>
+          </figure>
+        ))}
+      </section>
+    )}
+    <div class="wrap prose" set:html={renderBody(service.body)} />
+  </article>
+
+  {related.length > 0 && (
+    <section class="wrap section" aria-labelledby="related">
+      <h2 id="related">Related reading</h2>
+      <ul class="rows">
+        {related.map((post) => (
+          <li>
+            <a class="row-link" href={`/blog/${post.slug}/`}>
+              <span class="row-title">{post.title}</span>
+              <span class="row-text">{post.excerpt}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Base>

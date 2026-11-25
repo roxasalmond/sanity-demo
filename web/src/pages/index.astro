@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import Sections from '../components/Sections.astro';
+import { getHome, getSettings } from '../lib/content.js';
+
+const home = await getHome();
+const settings = await getSettings();
+---
+<Base title={home.seo?.metaTitle ?? settings.title} description={home.seo?.metaDescription}>
+  <Sections sections={home.sections} />
+</Base>

@@ -1,0 +1,604 @@
+/* Wren & Ledger: built from an old ledger book.
+   Ruled green lines carry the structure; the red margin rule is the one bold mark. */
+
+:root {
+  --paper: #fbfcf8;
+  --ledger: #e6efe3;
+  --rule: #a9c7a4;
+  --ink: #1f2a24;
+  --muted: #56645b;
+  --forest: #1e5b45;
+  --forest-dark: #164535;
+  --margin: #c8323c;
+
+  --col: 64rem;
+  --gutter: 1.5rem;
+  --font: 'Schibsted Grotesk', system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 106.25%; /* 17px */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(2.4rem, 6.2vw, 4.6rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  max-width: 16ch;
+}
+
+h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--forest);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: var(--forest-dark);
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--forest);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--col);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+  top: 0.5rem;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.5rem 1rem;
+  z-index: 10;
+}
+
+.skip:focus {
+  left: 0.5rem;
+}
+
+/* Header and footer */
+
+.site-header {
+  border-bottom: 1px solid var(--rule);
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4.5rem;
+  flex-wrap: wrap;
+  padding-block: 0.75rem;
+}
+
+@media (max-width: 30rem) {
+  .header-row {
+    gap: 0.5rem;
+  }
+
+  .site-header nav {
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .site-header nav .button {
+    margin-left: auto;
+  }
+}
+
+.wordmark {
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.site-header nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.site-header nav a:not(.button) {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.site-header nav a[aria-current='page'] {
+  text-decoration: underline;
+  text-decoration-color: var(--margin);
+  text-decoration-thickness: 2px;
+}
+
+.site-footer {
+  margin-top: 6rem;
+  border-top: 1px solid var(--rule);
+  background: var(--ledger);
+  padding-block: 2.5rem 1.5rem;
+  color: var(--muted);
+}
+
+.footer-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 48rem) {
+  .footer-grid {
+    grid-template-columns: 2fr repeat(auto-fit, minmax(10rem, 1fr));
+  }
+}
+
+.footer-grid p + p {
+  margin-top: 0.25rem;
+}
+
+.footer-contact {
+  margin-top: 1rem !important;
+}
+
+.footer-heading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.6rem;
+}
+
+.site-footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-footer li + li {
+  margin-top: 0.35rem;
+}
+
+.demo-note {
+  margin-top: 2rem;
+  font-size: 0.85rem;
+}
+
+/* The ledger margin: a red rule down the left of the page, drawn once on load. */
+
+.ledger {
+  position: relative;
+}
+
+@media (min-width: 72rem) {
+  .ledger::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - var(--col) / 2 - 1.25rem);
+    width: 2px;
+    background: var(--margin);
+    transform-origin: top;
+    animation: draw-margin 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+
+@keyframes draw-margin {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ledger::before {
+    animation: none;
+  }
+}
+
+/* Buttons and the booking bar */
+
+.button {
+  display: inline-block;
+  background: var(--forest);
+  color: var(--paper);
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0.85rem 1.3rem;
+  border-radius: 6px;
+}
+
+.button:hover {
+  background: var(--forest-dark);
+  color: var(--paper);
+}
+
+.button-secondary {
+  background: transparent;
+  color: var(--forest);
+  box-shadow: inset 0 0 0 2px var(--forest);
+}
+
+.button-secondary:hover {
+  background: var(--ledger);
+  color: var(--forest-dark);
+}
+
+.button-small {
+  padding: 0.55rem 0.95rem;
+  font-size: 0.95rem;
+}
+
+.booking-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-top: 2rem;
+}
+
+.booking-bar p {
+  color: var(--muted);
+}
+
+/* Page sections */
+
+.hero {
+  padding-block: 4.5rem 3.5rem;
+}
+
+.hero-small {
+  padding-block: 3rem 2.5rem;
+}
+
+.hero-small h1 {
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  max-width: 22ch;
+}
+
+.lede {
+  margin-top: 1.25rem;
+  font-size: 1.2rem;
+  max-width: 58ch;
+  color: var(--muted);
+}
+
+.crumb {
+  margin-bottom: 1rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.crumb a {
+  margin-right: 0.75rem;
+}
+
+.section {
+  margin-top: 4rem;
+}
+
+.section > h2 {
+  margin-bottom: 1.5rem;
+}
+
+/* First-call steps: a real sequence, so they are numbered. */
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: step;
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 48rem) {
+  .steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.steps li {
+  counter-increment: step;
+  border-top: 2px solid var(--ink);
+  padding-top: 1rem;
+}
+
+.steps li::before {
+  content: counter(step);
+  display: block;
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--forest);
+  margin-bottom: 0.75rem;
+}
+
+.steps p {
+  margin-top: 0.4rem;
+  color: var(--muted);
+  max-width: 34ch;
+}
+
+/* Ruled rows: services and posts, laid out like ledger lines. */
+
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.rows li {
+  border-bottom: 1px solid var(--rule);
+}
+
+.row-link {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1.15rem 0.5rem;
+  margin-inline: -0.5rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+@media (min-width: 48rem) {
+  .row-link {
+    grid-template-columns: minmax(14rem, 1fr) 2fr;
+    gap: 2rem;
+    align-items: baseline;
+  }
+}
+
+.row-link:hover {
+  background: var(--ledger);
+  color: var(--ink);
+}
+
+.row-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.row-link:hover .row-title {
+  text-decoration: underline;
+  text-decoration-color: var(--forest);
+}
+
+.row-text {
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+.row-text time {
+  color: var(--ink);
+  font-weight: 500;
+  margin-right: 0.5rem;
+}
+
+/* Client results */
+
+.stories {
+  display: grid;
+  gap: 2.5rem;
+}
+
+@media (min-width: 48rem) {
+  .stories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stories figure {
+  margin: 0;
+}
+
+.stories blockquote {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  max-width: 26ch;
+}
+
+.stories figcaption {
+  margin-top: 0.75rem;
+  color: var(--muted);
+}
+
+/* Long-form text */
+
+.prose {
+  max-width: calc(68ch + 2 * var(--gutter));
+  margin-inline: max(0px, calc((100% - var(--col)) / 2));
+  font-size: 1.05rem;
+}
+
+.prose > * + * {
+  margin-top: 1.1rem;
+}
+
+.prose h2 {
+  margin-top: 2.5rem;
+  font-size: 1.35rem;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.2rem;
+}
+
+.prose li + li {
+  margin-top: 0.4rem;
+}
+
+.next-step {
+  background: var(--ledger);
+  padding-block: 2rem;
+  border-radius: 6px;
+}
+
+.next-step p {
+  margin-top: 0.75rem;
+  max-width: 62ch;
+}
+
+/* Booking */
+
+.book p {
+  max-width: 58ch;
+}
+
+.booking-placeholder {
+  margin-top: 1.5rem;
+  min-height: 12rem;
+  display: grid;
+  place-items: center;
+  border: 2px dashed var(--rule);
+  border-radius: 6px;
+  background: var(--ledger);
+  color: var(--muted);
+  text-align: center;
+  padding: 1.5rem;
+}
+
+/* Service results: proof sits right under the headline */
+
+.service-results {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  padding-block: 1.5rem;
+  border-block: 1px solid var(--rule);
+}
+
+@media (min-width: 48rem) {
+  .service-results {
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+}
+
+.service-results figure {
+  margin: 0;
+}
+
+.service-results blockquote {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.service-results figcaption {
+  margin-top: 0.4rem;
+  color: var(--muted);
+}
+
+/* Images and video inside page text */
+
+.prose figure {
+  margin-inline: 0;
+}
+
+.prose img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.prose figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.video {
+  aspect-ratio: 16 / 9;
+}
+
+.video iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 6px;
+}
+
+/* Questions and answers */
+
+.faq {
+  border-top: 1px solid var(--rule);
+  max-width: 68ch;
+}
+
+.faq details {
+  border-bottom: 1px solid var(--rule);
+}
+
+.faq summary {
+  cursor: pointer;
+  padding: 1rem 0;
+  font-weight: 700;
+  font-size: 1.05rem;
+  list-style-position: outside;
+}
+
+.faq details p {
+  padding-bottom: 1.1rem;
+  color: var(--muted);
+}
+
+.section-more {
+  margin-top: 1rem;
+  font-weight: 500;
+}

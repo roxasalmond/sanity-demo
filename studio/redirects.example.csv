@@ -1,0 +1,6 @@
+from,to,permanent
+/consulting/,/services/,yes
+/marketing/,/services/marketing-strategy/,yes
+https://example.com/growth-consulting/,/services/growth-planning/,yes
+/hiring-help/,/services/operations-and-hiring/,yes
+/old-pricing-post/,/blog/price-a-new-service/,yes

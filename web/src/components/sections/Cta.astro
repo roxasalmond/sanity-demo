@@ -1,0 +1,18 @@
+---
+import Button from '../Button.astro';
+import { getSettings } from '../../lib/content.js';
+const { section } = Astro.props;
+const settings = await getSettings();
+const tel = settings.phone.replace(/[^\d+]/g, '');
+const id = `cta-${section._key}`;
+---
+<section class="wrap section book" id={section.showBookingEmbed ? 'book' : undefined} aria-labelledby={id}>
+  <h2 id={id}>{section.heading}</h2>
+  {section.text && <p>{section.text}</p>}
+  {section.showBookingEmbed && (
+    <div class="booking-placeholder">
+      <p>Your booking calendar (Calendly, Cal.com or similar) goes here.<br />Or call <a href={`tel:${tel}`}>{settings.phone}</a>.</p>
+    </div>
+  )}
+  <div class="booking-bar"><Button cta={section.cta} /></div>
+</section>

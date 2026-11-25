@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import BookingBar from '../../components/BookingBar.astro';
+import { getServices, getSettings } from '../../lib/content.js';
+
+const services = await getServices();
+const settings = await getSettings();
+---
+<Base
+  title={`Services | ${settings.title}`}
+  description="Growth planning, marketing strategy and operations help for owner-run businesses."
+>
+  <section class="hero hero-small wrap">
+    <h1>Services</h1>
+    <p class="lede">Three ways we work with owners. Most clients start with one and add another later.</p>
+    <BookingBar />
+  </section>
+  <section class="wrap section">
+    <ul class="rows">
+      {services.map((service) => (
+        <li>
+          <a class="row-link" href={`/services/${service.slug}/`}>
+            <span class="row-title">{service.title}</span>
+            <span class="row-text">{service.summary}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>

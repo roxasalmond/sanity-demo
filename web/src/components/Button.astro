@@ -1,0 +1,8 @@
+---
+// Every button on the site comes from here, so they always look the same.
+const { cta, class: extra = '' } = Astro.props;
+const style = cta?.style === 'secondary' ? 'button-secondary' : '';
+---
+{cta?.label && cta?.href && (
+  <a class:list={['button', style, extra]} href={cta.href}>{cta.label}</a>
+)}

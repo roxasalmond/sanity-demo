@@ -1,0 +1,28 @@
+---
+// Renders a page built from sections. Each section type has one component.
+import Hero from './sections/Hero.astro';
+import Steps from './sections/Steps.astro';
+import ServiceList from './sections/ServiceList.astro';
+import Results from './sections/Results.astro';
+import BlogList from './sections/BlogList.astro';
+import Text from './sections/Text.astro';
+import Faq from './sections/Faq.astro';
+import Cta from './sections/Cta.astro';
+
+const components = {
+  heroSection: Hero,
+  stepsSection: Steps,
+  serviceListSection: ServiceList,
+  resultsSection: Results,
+  blogListSection: BlogList,
+  textSection: Text,
+  faqSection: Faq,
+  ctaSection: Cta,
+};
+
+const { sections = [] } = Astro.props;
+---
+{sections.map((section) => {
+  const Component = components[section._type];
+  return Component ? <Component section={section} /> : null;
+})}

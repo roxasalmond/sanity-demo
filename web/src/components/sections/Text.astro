@@ -1,0 +1,8 @@
+---
+import { renderBody } from '../../lib/portable-text.js';
+const { section } = Astro.props;
+---
+<section class="section">
+  {section.heading && <h2 class="wrap">{section.heading}</h2>}
+  <div class="wrap prose" set:html={renderBody(section.body)} />
+</section>

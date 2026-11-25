@@ -1,0 +1,15 @@
+---
+const { section } = Astro.props;
+const id = `results-${section._key}`;
+---
+<section class="wrap section" aria-labelledby={id}>
+  <h2 id={id}>{section.heading}</h2>
+  <div class="stories">
+    {(section.items ?? []).map((item) => (
+      <figure>
+        <blockquote>{item.result}</blockquote>
+        <figcaption>{item.client}</figcaption>
+      </figure>
+    ))}
+  </div>
+</section>

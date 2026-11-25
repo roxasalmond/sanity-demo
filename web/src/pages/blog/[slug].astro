@@ -1,0 +1,40 @@
+---
+import Base from '../../layouts/Base.astro';
+import BookingBar from '../../components/BookingBar.astro';
+import { getPosts } from '../../lib/content.js';
+import { renderBody } from '../../lib/portable-text.js';
+import { formatDate } from '../../lib/format.js';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+---
+<Base
+  title={post.seo?.metaTitle ?? post.title}
+  description={post.seo?.metaDescription ?? post.excerpt}
+  noindex={post.seo?.noindex}
+>
+  <article>
+    <header class="hero hero-small wrap">
+      <p class="crumb"><a href="/blog/">Blog</a> <time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time></p>
+      <h1>{post.title}</h1>
+      <p class="lede">{post.excerpt}</p>
+      <BookingBar />
+    </header>
+    <div class="wrap prose" set:html={renderBody(post.body)} />
+  </article>
+
+  {post.relatedService && (
+    <aside class="wrap section next-step" aria-labelledby="next-step">
+      <h2 id="next-step">Want help with this?</h2>
+      <p>
+        This is part of our <a href={`/services/${post.relatedService.slug}/`}>{post.relatedService.title.toLowerCase()}</a> work.
+        {' '}{post.relatedService.summary}
+      </p>
+      <BookingBar />
+    </aside>
+  )}
+</Base>

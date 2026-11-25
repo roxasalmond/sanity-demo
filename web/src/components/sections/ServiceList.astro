@@ -1,0 +1,17 @@
+---
+const { section } = Astro.props;
+const id = `services-${section._key}`;
+---
+<section class="wrap section" id="services" aria-labelledby={id}>
+  <h2 id={id}>{section.heading}</h2>
+  <ul class="rows">
+    {(section.services ?? []).filter(Boolean).map((service) => (
+      <li>
+        <a class="row-link" href={`/services/${service.slug}/`}>
+          <span class="row-title">{service.title}</span>
+          <span class="row-text">{service.summary}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>

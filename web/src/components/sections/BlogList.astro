@@ -1,0 +1,20 @@
+---
+import { getPosts } from '../../lib/content.js';
+const { section } = Astro.props;
+const posts = (await getPosts()).slice(0, section.count ?? 2);
+const id = `blog-${section._key}`;
+---
+<section class="wrap section" aria-labelledby={id}>
+  <h2 id={id}>{section.heading}</h2>
+  <ul class="rows">
+    {posts.map((post) => (
+      <li>
+        <a class="row-link" href={`/blog/${post.slug}/`}>
+          <span class="row-title">{post.title}</span>
+          <span class="row-text">{post.excerpt}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <p class="section-more"><a href="/blog/">All blog posts</a></p>
+</section>

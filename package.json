@@ -1,0 +1,14 @@
+{
+  "name": "wren-ledger-demo",
+  "private": true,
+  "scripts": {
+    "setup": "cd web && npm install",
+    "dev": "cd web && npm run dev",
+    "build": "cd web && npm run build",
+    "preview": "cd web && npm run preview",
+    "studio:setup": "cd studio && npm install",
+    "studio": "cd studio && npm run dev",
+    "seed": "cd studio && npm run seed",
+    "import:redirects": "cd studio && node scripts/import-redirects.mjs"
+  }
+}

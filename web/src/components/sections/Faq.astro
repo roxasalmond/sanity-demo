@@ -1,0 +1,15 @@
+---
+const { section } = Astro.props;
+const id = `faq-${section._key}`;
+---
+<section class="wrap section" aria-labelledby={id}>
+  <h2 id={id}>{section.heading}</h2>
+  <div class="faq">
+    {(section.items ?? []).map((item) => (
+      <details>
+        <summary>{item.question}</summary>
+        <p>{item.answer}</p>
+      </details>
+    ))}
+  </div>
+</section>
