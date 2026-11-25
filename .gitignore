@@ -6,3 +6,6 @@ dist/
 web/public/_redirects
 studio/seed.ndjson
 studio/redirects.ndjson
+
+# Private project notes
+PROJECT-NOTES.md
